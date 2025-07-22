@@ -1,57 +1,43 @@
-# Lattice_Circle                                        ---- function ----
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-library(network)
+lattice_circle <- function(n = 5, display_plot = TRUE) {
+  # adjacency matrix ----
+  adj <- matrix(0, ncol = n, nrow = n, dimnames = list(1:n, 1:n))
 
-# returns:
-#
-# Adj: n nodes adjacency matrix
-# Crd: Adj's circular coordinates 
-#
-#
+  from <- 1:n
+  to <- from %% n + 1
+  adj[cbind(from, to)] <- 1
 
-Lattice_Circle <- function( n = 5 )
-{
-  
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # Adjacency Matrix
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  adj <- matrix( 0 , ncol = n , nrow = n )
-  
-  for( i in 1:n )
-  {
-    adj[ i , ifelse( i==(n-1) , n , (i+1)%%n ) ] <- 1
+  # symmetrize adjacency matrix (undirected)
+  adj <- ((adj + t(adj)) > 0) * 1
+
+
+  # coordinates ----
+  theta <- seq(0, 2 * pi, length.out = n + 1)[-(n + 1)]
+  x <- sin(theta)
+  y <- cos(theta)
+  coord <- data.frame(x = x, y = y)
+
+
+  # network ----
+  net <- as.network(adj, directed = FALSE)
+
+
+  # plot ----
+  if (isTRUE(display_plot)) {
+    # set original par
+    opar <- par(no.readonly = TRUE)
+    on.exit(par(opar))
+
+    # plot
+    par(mai = rep(0, 4))
+    plot(
+      net,
+      coord = coord,
+      jitter = FALSE,
+      displaylabels = TRUE,
+      label.pos = 1,
+      edge.col = "gray"
+    )
   }
-  
-  Net <- as.network( adj , directed = F )
-  Adj <- as.matrix( Net , matrix.type = "adjacency" )
-  
-  
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # Coordinates
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  theta <- seq( 0 , n , 1 ) * 2*pi/n
-  x <- sin( theta[-(n+1)] )
-  y <- cos( theta[-(n+1)] )
-  
-  Crd <- as.data.frame( cbind( x , y ) )
-  
-  plot( Net ,
-        coord = Crd , jitter = F ,
-        displaylabels = T ,
-        label.pos = 1 ,
-        edge.col = "gray" )
-  
-  return( list( Adj = Adj , Crd = Crd ) )
-  
-}
 
-# Lat_Cir <- Lattice_Circle( 64 )
-# Adj_Cir <- Lat_Cir$Adj
-# Crd_Cir <- Lat_Cir$Crd
-# 
-# plot( as.network( Adj_Cir , directed = F) ,
-#       coord = Crd_Cir , jitter = F ,
-#       edge.col = "gray" ,
-#       displaylabels = T ,
-#       label.pos = 1 )
+  return(list(adj = adj, coord = coord, net = net))
+}
