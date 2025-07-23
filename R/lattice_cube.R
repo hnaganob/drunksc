@@ -1,4 +1,4 @@
-Lattice_Cube <- function(nx = 3, ny = 4, nz = 5, torus = TRUE, display_plot = TRUE) {
+lattice_cube <- function(nx = 3, ny = 4, nz = 5, torus = TRUE, display_plot = TRUE) {
   # adjacency matrix ----
 
   # ~~~~~~~~~~~~~~~
