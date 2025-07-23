@@ -1,5 +1,8 @@
-Lattice_Hexagon <- function(nx = 5, ny = 7, torus = TRUE, display_plot = TRUE) {
-
+lattice_hexagon <- function(nx = 8, ny = 8, torus = TRUE, display_plot = TRUE) {
+  stopifnot(
+    nx >= 2, is.numeric(nx), nx == as.integer(nx),
+    ny >= 2, is.numeric(ny), ny == as.integer(ny)
+  )
 
   # adjacency matrix ----
   nodeList <- list()
