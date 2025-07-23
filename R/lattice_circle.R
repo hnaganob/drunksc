@@ -1,7 +1,8 @@
 lattice_circle <- function(n = 5, display_plot = TRUE) {
+  stopifnot(n >= 2, is.numeric(n), n == as.integer(n))
+
   # adjacency matrix ----
   adj <- matrix(0, ncol = n, nrow = n, dimnames = list(1:n, 1:n))
-
   from <- 1:n
   to <- from %% n + 1
   adj[cbind(from, to)] <- 1
@@ -23,11 +24,6 @@ lattice_circle <- function(n = 5, display_plot = TRUE) {
 
   # plot ----
   if (isTRUE(display_plot)) {
-    # set original par
-    opar <- par(no.readonly = TRUE)
-    on.exit(par(opar))
-
-    # plot
     par(mai = rep(0, 4))
     plot(
       net,

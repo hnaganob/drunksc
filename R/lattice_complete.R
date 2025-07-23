@@ -1,4 +1,6 @@
 lattice_complete <- function(n = 5, display_plot = TRUE) {
+  stopifnot(n >= 2, is.numeric(n), n == as.integer(n))
+
   # adjacency matrix ----
   adj <- matrix(1, ncol = n, nrow = n, dimnames = list(1:n, 1:n))
   diag(adj) <- 0

@@ -1,4 +1,6 @@
 lattice_line <- function(n = 5, display_plot = TRUE) {
+  stopifnot(n >= 2, is.numeric(n), n == as.integer(n))
+
   # adjacency matrix ----
   adj <- matrix(0, ncol = n, nrow = n, dimnames = list(1:n, 1:n))
   from <- 1:(n-1)
@@ -11,9 +13,11 @@ lattice_line <- function(n = 5, display_plot = TRUE) {
 
 
   # coordinates ----
-  theta <- seq(0, 2 * pi, length.out = n + 1)[-(n + 1)]
-  x <- sin(theta)
-  y <- cos(theta)
+  # theta <- seq(0, 2 * pi, length.out = n + 1)[-(n + 1)]
+  # x <- sin(theta)
+  # y <- cos(theta)
+  x <- 1:n
+  y <- 1:n
   coord <- data.frame(x = x, y = y)
 
 
