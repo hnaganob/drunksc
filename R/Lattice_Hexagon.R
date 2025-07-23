@@ -1,127 +1,105 @@
-# HexLattice                                            ---- function ----
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-library(network)
+Lattice_Hexagon <- function(nx = 5, ny = 7, torus = TRUE, display_plot = TRUE) {
 
-# returns:
-#
-# Adj: nX x nY nodes adjacency matrix
-# Crd: Adj's hexagonal coordinates 
-#
-# see p.438 of Cressie (1993)
 
-Lattice_Hexagon <- function( nX = 5 , nY = 7 , Torus = T )
-{
-  
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # Adjacency Matrix
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # adjacency matrix ----
   nodeList <- list()
-  for( i in 1:nY )
+  for (i in 1:ny)
   {
-    nodeList[[i]] <- (i-1)*nX + 1:nX
+    nodeList[[i]] <- (i - 1) * nx + 1:nx
   }
-  
-  adj <- matrix( 0 , ncol = nX*nY , nrow = nX*nY )
-  
-  for( i in 1:nY )
-  {
-    for( j in 1:nX )
-    {
-      adj[ nodeList[[i]][j] , nodeList[[i]][j+1] ] <- 1
-    }
-  }
-  
-  for( i in 1:(nY-1) )
-  {
-    for( j in 1:nX )
-    {
-      adj[ nodeList[[i]][j] , nodeList[[i+1]][j] ] <- 1
-    }
-  }
-  
-  for( i in 1:nY )
-  {
-    for( j in 1:(nX-1) )
-    {
-      if( i %% 2 == 0 )
-      {
-        adj[ nodeList[[i]][j] , nodeList[[i-1]][j+1] ] <- 1
-        if( i != nY )
-        {
-          adj[ nodeList[[i]][j] , nodeList[[i+1]][j+1] ] <- 1
-        }
-      }
-    }
-  }
-  
-  if( Torus )
-  {
-    for( i in 1:nY )
-    {
-      adj[ nodeList[[i]][nX] , nodeList[[i]][1] ] <- 1
-      if( i %% 2 == 0 )
-      {
-        adj[ nodeList[[i]][nX] , nodeList[[i-1]][1] ] <- 1
-        if( i == nY )
-        {
-          adj[ nodeList[[i]][nX] , nodeList[[1]][1] ] <- 1
-          adj[ nodeList[[i]][nX] , nodeList[[1]][nX] ] <- 1
-          for( j in 1:(nX-1) )
-          {
-            adj[ nodeList[[i]][j] , nodeList[[1]][j] ] <- 1
-            adj[ nodeList[[i]][j] , nodeList[[1]][j+1] ] <- 1
-          }
-        }else
-        {
-          adj[ nodeList[[i]][nX] , nodeList[[i+1]][1] ] <- 1
-        }
-      }
-    }
-    if( nY %% 2 != 0 )
-    {
-      for( j in 1:(nX-1) )
-      {
-        adj[ nodeList[[nY]][j] , nodeList[[1]][j] ] <- 1
-        adj[ nodeList[[nY]][j] , nodeList[[1]][j+1] ] <- 1
-      }
-      adj[ nodeList[[nY]][nX] , nodeList[[1]][nX] ] <- 1
-      adj[ nodeList[[nY]][nX] , nodeList[[1]][1] ] <- 1
-    }
-  }
-  
-  Net <- as.network( adj , directed = F )
-  Adj <- as.matrix( Net , matrix.type = "adjacency" )
-  
-  
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # Coordinates
-  #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  x <- rep( 1:nX , times = nY+1e-7 )  # See ?rep
-  y <- rep( 1:nY , times = nX+1e-7 )  # See ?rep
-  y <- -y[ order(y) ]
-  
-  is.even <- function(x) x %% 2 == 0
-  x <- ifelse(is.even(y),x+0.5,x)
-  # plot( x , y )
-  Crd <- as.data.frame( cbind( x , y ) )
-  
-  # plot( Net , 
-  #       coord = Crd , jitter = F ,
-  #       displaylabels = T ,
-  #       label.pos = 1 ,
-  #       edge.col = "gray" )
-  
-  return( list( Adj = Adj , Crd = Crd ) )
-  
-}
 
-# Lat_Hex <- Lattice_Hexagon( 9 , 8 , Torus = T ) 
-# Adj_Hex <- Lat_Hex$Adj
-# Crd_Hex <- Lat_Hex$Crd
-# 
-# plot( as.network( Adj_Hex , directed = F) ,
-#       coord = Crd_Hex , jitter = F ,
-#       edge.col = "gray" ,
-#       displaylabels = T ,
-#       label.pos = 1 )
+  adj <- matrix(0, ncol = nx * ny, nrow = nx * ny)
+
+  for (i in 1:ny)
+  {
+    for (j in 1:nx)
+    {
+      adj[nodeList[[i]][j], nodeList[[i]][j + 1]] <- 1
+    }
+  }
+
+  for (i in 1:(ny - 1))
+  {
+    for (j in 1:nx)
+    {
+      adj[nodeList[[i]][j], nodeList[[i + 1]][j]] <- 1
+    }
+  }
+
+  for (i in 1:ny)
+  {
+    for (j in 1:(nx - 1))
+    {
+      if (i %% 2 == 0) {
+        adj[nodeList[[i]][j], nodeList[[i - 1]][j + 1]] <- 1
+        if (i != ny) {
+          adj[nodeList[[i]][j], nodeList[[i + 1]][j + 1]] <- 1
+        }
+      }
+    }
+  }
+
+  if (torus) {
+    for (i in 1:ny)
+    {
+      adj[nodeList[[i]][nx], nodeList[[i]][1]] <- 1
+      if (i %% 2 == 0) {
+        adj[nodeList[[i]][nx], nodeList[[i - 1]][1]] <- 1
+        if (i == ny) {
+          adj[nodeList[[i]][nx], nodeList[[1]][1]] <- 1
+          adj[nodeList[[i]][nx], nodeList[[1]][nx]] <- 1
+          for (j in 1:(nx - 1))
+          {
+            adj[nodeList[[i]][j], nodeList[[1]][j]] <- 1
+            adj[nodeList[[i]][j], nodeList[[1]][j + 1]] <- 1
+          }
+        } else {
+          adj[nodeList[[i]][nx], nodeList[[i + 1]][1]] <- 1
+        }
+      }
+    }
+    if (ny %% 2 != 0) {
+      for (j in 1:(nx - 1))
+      {
+        adj[nodeList[[ny]][j], nodeList[[1]][j]] <- 1
+        adj[nodeList[[ny]][j], nodeList[[1]][j + 1]] <- 1
+      }
+      adj[nodeList[[ny]][nx], nodeList[[1]][nx]] <- 1
+      adj[nodeList[[ny]][nx], nodeList[[1]][1]] <- 1
+    }
+  }
+
+  # symmetrize adjacency matrix (undirected)
+  adj <- ((adj + t(adj)) > 0) * 1
+
+
+  # coordinates ----
+  x <- rep(1:nx, times = ny + 1e-7) # See ?rep
+  y <- rep(1:ny, times = nx + 1e-7) # See ?rep
+  y <- -y[order(y)]
+
+  is.even <- function(x) x %% 2 == 0
+  x <- ifelse(is.even(y), x + 0.5, x)
+
+  coord <- data.frame(x = x, y = y)
+
+
+  # network ----
+  net <- as.network(adj, directed = FALSE)
+
+
+  # plot ----
+  if (isTRUE(display_plot)) {
+    par(mai = rep(0, 4))
+    plot(
+      net,
+      coord = coord,
+      jitter = FALSE,
+      displaylabels = TRUE,
+      label.pos = 1,
+      edge.col = "gray"
+    )
+  }
+
+  return(list(adj = adj, coord = coord, net = net))
+}
