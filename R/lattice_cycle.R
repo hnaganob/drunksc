@@ -16,10 +16,10 @@
 #' @export
 #'
 #' @examples
-#' lat <- lattice_circle(n = 5, display_plot = FALSE)
+#' lat <- lattice_cycle(n = 5, display_plot = FALSE)
 #' lat$adj
 #' plot(lat$net, coord = lat$coord, jitter = FALSE, displaylabels = TRUE)
-lattice_circle <- function(n = 5, display_plot = TRUE) {
+lattice_cycle <- function(n = 5, display_plot = TRUE) {
   stopifnot(n >= 2, is.numeric(n), n == as.integer(n))
 
   # adjacency matrix ----
