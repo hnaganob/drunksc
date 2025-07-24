@@ -1,3 +1,25 @@
+#' Generate a Circular Lattice Graph
+#'
+#' Construct an adjacency matrix for a circular lattice with `n` nodes.
+#'
+#' @param n  A positive integer specifying the number of nodes in the circular lattice.
+#' @param display_plot  Logical. If `TRUE`, the circular lattice is plotted using `plot.network()` from the **network** package.
+#'
+#' @returns  A list with the following components:
+#' \describe{
+#'   \item{`adj`}{A symmetric adjacency matrix representing the circular lattice.}
+#'   \item{`coord`}{A data frame of node coordinates arranged in a circle.}
+#'   \item{`net`}{A `network` object from the **network** package representing the graph.}
+#' }
+#'
+#' @importFrom network as.network plot.network
+#' @export
+#'
+#' @examples
+#' lat <- lattice_circle(n = 5, display_plot = FALSE)
+#' lat$adj
+#' plot(lat$net, coord = lat$coord, jitter = FALSE, displaylabels = TRUE)
+#'
 lattice_circle <- function(n = 5, display_plot = TRUE) {
   stopifnot(n >= 2, is.numeric(n), n == as.integer(n))
 
