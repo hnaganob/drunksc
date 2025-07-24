@@ -1,3 +1,24 @@
+#' Generate a Complete Graph
+#'
+#' Construct an adjacency matrix for a complete graph with `n` nodes.
+#'
+#' @param n  A positive integer specifying the number of nodes in the complete graph.
+#' @param display_plot  Logical. If `TRUE`, the lattice is plotted using `plot.network()` from the **network** package.
+#'
+#' @returns  A list with the following components:
+#' \describe{
+#'   \item{`adj`}{A symmetric adjacency matrix representing the complete graph.}
+#'   \item{`coord`}{A data frame of node coordinates arranged in a circle.}
+#'   \item{`net`}{A `network` object from the **network** package representing the graph.}
+#' }
+#'
+#' @importFrom network as.network plot.network
+#' @export
+#'
+#' @examples
+#' lat <- lattice_complete(n = 5, display_plot = FALSE)
+#' lat$adj
+#' plot(lat$net, coord = lat$coord, jitter = FALSE, displaylabels = TRUE)
 lattice_complete <- function(n = 5, display_plot = TRUE) {
   stopifnot(n >= 2, is.numeric(n), n == as.integer(n))
 

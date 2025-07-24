@@ -1,4 +1,4 @@
-lattice_cube <- function(nx = 3, ny = 4, nz = 5, torus = TRUE, display_plot = TRUE) {
+lattice_cube <- function(nx = 4, ny = 4, nz = 4, torus = TRUE, display_plot = TRUE) {
   stopifnot(
     nx >= 2, is.numeric(nx), nx == as.integer(nx),
     ny >= 2, is.numeric(ny), ny == as.integer(ny),

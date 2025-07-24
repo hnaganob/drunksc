@@ -3,7 +3,7 @@
 #' Construct an adjacency matrix for a cycle graph with `n` nodes.
 #'
 #' @param n  A positive integer specifying the number of nodes in the cycle graph.
-#' @param display_plot  Logical. If `TRUE`, the circular lattice is plotted using `plot.network()` from the **network** package.
+#' @param display_plot  Logical. If `TRUE`, the lattice is plotted using `plot.network()` from the **network** package.
 #'
 #' @returns  A list with the following components:
 #' \describe{
