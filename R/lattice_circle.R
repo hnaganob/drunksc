@@ -1,13 +1,13 @@
-#' Generate a Cycle Graph
+#' Generate a Lattice for Circle
 #'
 #' Construct an adjacency matrix for a cycle graph with `n` nodes.
 #'
 #' @param n  A positive integer specifying the number of nodes in the cycle graph.
-#' @param display_plot  Logical. If `TRUE`, the lattice is plotted using `plot.network()` from the **network** package.
+#' @param display_plot  Logical. If `TRUE`, plot the resulting lattice using `plot.network()` from the **network** package.
 #'
 #' @returns  A list with the following components:
 #' \describe{
-#'   \item{`adj`}{A symmetric adjacency matrix representing the circular lattice.}
+#'   \item{`adj`}{A symmetric adjacency matrix representing the lattice for circle.}
 #'   \item{`coord`}{A data frame of node coordinates arranged in a circle.}
 #'   \item{`net`}{A `network` object from the **network** package representing the graph.}
 #' }
@@ -19,7 +19,7 @@
 #' lat <- lattice_cycle(n = 5, display_plot = FALSE)
 #' lat$adj
 #' plot(lat$net, coord = lat$coord, jitter = FALSE, displaylabels = TRUE)
-lattice_cycle <- function(n = 5, display_plot = TRUE) {
+lattice_circle <- function(n = 5, display_plot = TRUE) {
   stopifnot(n >= 2, is.numeric(n), n == as.integer(n))
 
   # adjacency matrix ----
