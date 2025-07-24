@@ -1,8 +1,8 @@
-#' Generate a Complete Graph
+#' Generate a Lattice for Full Connection
 #'
-#' Construct an adjacency matrix for a complete graph with `n` nodes.
+#' Construct an adjacency matrix for a fully connected lattice (i.e., complete graph) with `n` nodes.
 #'
-#' @param n  A positive integer specifying the number of nodes in the complete graph.
+#' @param n  A positive integer specifying the number of nodes in the graph.
 #' @param display_plot  Logical. If `TRUE`, the lattice is plotted using `plot.network()` from the **network** package.
 #'
 #' @returns  A list with the following components:

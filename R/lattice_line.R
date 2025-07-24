@@ -2,7 +2,7 @@
 #'
 #' Construct an adjacency matrix for a line (i.e., path graph) with `n` nodes.
 #'
-#' @param n  A positive integer specifying the number of nodes in the line.
+#' @param n  A positive integer specifying the number of nodes in the graph.
 #' @param display_plot  Logical. If `TRUE`, the lattice is plotted using `plot.network()` from the **network** package.
 #'
 #' @returns  A list with the following components:

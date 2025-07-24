@@ -2,12 +2,12 @@
 % Please edit documentation in R/lattice_complete.R
 \name{lattice_complete}
 \alias{lattice_complete}
-\title{Generate a Complete Graph}
+\title{Generate a Lattice for Full Connection}
 \usage{
 lattice_complete(n = 5, display_plot = TRUE)
 }
 \arguments{
-\item{n}{A positive integer specifying the number of nodes in the complete graph.}
+\item{n}{A positive integer specifying the number of nodes in the graph.}
 
 \item{display_plot}{Logical. If \code{TRUE}, the lattice is plotted using \code{plot.network()} from the \strong{network} package.}
 }
@@ -20,7 +20,7 @@ A list with the following components:
 }
 }
 \description{
-Construct an adjacency matrix for a complete graph with \code{n} nodes.
+Construct an adjacency matrix for a fully connected lattice (i.e., complete graph) with \code{n} nodes.
 }
 \examples{
 lat <- lattice_complete(n = 5, display_plot = FALSE)

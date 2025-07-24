@@ -1,3 +1,26 @@
+#' Generate a Lattice for Hexagon
+#'
+#' Construct an adjacency matrix for a hexagonal shape lattice with \eqn{n_x \times n_y} nodes, optionally wrapped as a torus.
+#'
+#' @param nx Integer. Number of nodes along the x-axis. Must be 2 or greater.
+#' @param ny Integer. Number of nodes along the y-axis. Must be 2 or greater.
+#' @param torus Logical. If `TRUE`, the lattice wraps around horizontally and vertically to form a toroidal structure.
+#' @param display_plot Logical. If `TRUE`, plot the resulting lattice using `plot.network()` from the **network** package.
+#'
+#' @returns  A list with the following components:
+#' \describe{
+#'   \item{`adj`}{A symmetric adjacency matrix representing the lattice for hexagon.}
+#'   \item{`coord`}{A data frame of node coordinates for plotting.}
+#'   \item{`net`}{A `network` object from the **network** package representing the lattice.}
+#' }
+#'
+#' @importFrom network as.network plot.network
+#' @export
+#'
+#' @examples
+#' lat <- lattice_hexagon(nx = 8, ny = 8, torus = TRUE, display_plot = FALSE)
+#' lat$adj
+#' plot(lat$net, coord = lat$coord, jitter = FALSE, displaylabels = TRUE)
 lattice_hexagon <- function(nx = 8, ny = 8, torus = TRUE, display_plot = TRUE) {
   stopifnot(
     nx >= 2, is.numeric(nx), nx == as.integer(nx),

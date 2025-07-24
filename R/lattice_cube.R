@@ -1,3 +1,27 @@
+#' Generate a Lattice for Cube
+#'
+#' Construct an adjacency matrix for a cubic shape lattice with \eqn{n_x \times n_y \times n_z} nodes, optionally wrapped as a torus.
+#'
+#' @param nx Integer. Number of nodes along the x-axis. Must be 2 or greater.
+#' @param ny Integer. Number of nodes along the y-axis. Must be 2 or greater.
+#' @param nz Integer. Number of nodes along the z-axis. Must be 2 or greater.
+#' @param torus Logical. If `TRUE`, wrap the lattice around each axis to form a 3D torus.
+#' @param display_plot Logical. If `TRUE`, plot the resulting lattice using `plot.network()` from the **network** package.
+#'
+#' @returns  A list with the following components:
+#' \describe{
+#'   \item{`adj`}{A symmetric adjacency matrix representing the lattice for cube.}
+#'   \item{`coord`}{A data frame of node coordinates for plotting.}
+#'   \item{`net`}{A `network` object from the **network** package representing the lattice.}
+#' }
+#'
+#' @importFrom network as.network plot.network
+#' @export
+#'
+#' @examples
+#' lat <- lattice_cube(nx = 4, ny = 4, nz = 4, torus = TRUE, display_plot = FALSE)
+#' lat$adj
+#' plot(lat$net, coord = lat$coord, jitter = FALSE, displaylabels = TRUE)
 lattice_cube <- function(nx = 4, ny = 4, nz = 4, torus = TRUE, display_plot = TRUE) {
   stopifnot(
     nx >= 2, is.numeric(nx), nx == as.integer(nx),
