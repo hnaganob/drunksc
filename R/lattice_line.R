@@ -1,25 +1,25 @@
-#' Generate a Path Graph
+#' Generate a Lattice for Line
 #'
-#' Construct an adjacency matrix for a path graph with `n` nodes.
+#' Construct an adjacency matrix for a line (i.e., path graph) with `n` nodes.
 #'
-#' @param n  A positive integer specifying the number of nodes in the path graph.
+#' @param n  A positive integer specifying the number of nodes in the line.
 #' @param display_plot  Logical. If `TRUE`, the lattice is plotted using `plot.network()` from the **network** package.
 #'
 #' @returns  A list with the following components:
 #' \describe{
-#'   \item{`adj`}{A symmetric adjacency matrix representing the path graph.}
-#'   \item{`coord`}{A data frame of node coordinates arranged in a line.}
-#'   \item{`net`}{A `network` object from the **network** package representing the graph.}
+#'   \item{`adj`}{A symmetric adjacency matrix representing the lattice for line}
+#'   \item{`coord`}{A data frame of node coordinates for plotting.}
+#'   \item{`net`}{A `network` object from the **network** package representing the lattice.}
 #' }
 #'
 #' @importFrom network as.network plot.network
 #' @export
 #'
 #' @examples
-#' lat <- lattice_path(n = 5, display_plot = FALSE)
+#' lat <- lattice_line(n = 5, display_plot = FALSE)
 #' lat$adj
 #' plot(lat$net, coord = lat$coord, jitter = FALSE, displaylabels = TRUE)
-lattice_path <- function(n = 5, display_plot = TRUE) {
+lattice_line <- function(n = 5, display_plot = TRUE) {
   stopifnot(n >= 2, is.numeric(n), n == as.integer(n))
 
   # adjacency matrix ----
