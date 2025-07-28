@@ -1,5 +1,31 @@
+#' Random Walk on a Graph
+#'
+#' `drunksc::random_walk()` follows a single walker that moves from its current node to one of its outgoing neighbors at each step.
+#' Rows and columns of `adj` are treated as out-edges and in-edges, respectively.
+#' The walk terminates early if it reaches a sink (a node with zero out-degree).
+#' The function then returns both the sequence of visited nodes and a
+#' per-node visit count.
+#'
+#' @param adj
+#' A square numeric adjacency matrix.
+#' Entry \code{adj[i, j] != 0} indicates a directed edge from node \code{i} to node \code{j}.
+#' Values are treated as logical.
+#' @param n_steps A positive integer. Maximum number of steps to take (including the starting node). Defaults to \code{1000}.
+#' @param start_node An integer index between \code{1} and \code{nrow(adj)}. Node at which the walk begins. Must have at least one outgoing edge.
+#'
+#' @returns An integer vector containing the sequence of visited node indices. Its length is \eqn{\le} \code{n_steps}; if the walker reaches a sink earlier, the vector is shorter and a warning is issued.
+#'
+#' @export
+#'
+#' @examples
+#' adj <- lattice_circle(n = 10)$adj
+#' path <- random_walk(adj = adj, n_steps = 10000, start_node = 1)
+#' barplot(table(path))
+#'
+#' adj[1, 10] <- 0  # Removed outgoing edge from node 1 to node 10.
+#' path <- random_walk(adj = adj, n_steps = 10000, start_node = 1)
+#' barplot(table(path))
 random_walk <- function(adj, n_steps = 1000, start_node = 1) {
-
   # adjacency matrix
   if (!is.matrix(adj) || nrow(adj) != ncol(adj)) {
     stop("The adjacency matrix must be a square matrix.")
@@ -32,13 +58,14 @@ random_walk <- function(adj, n_steps = 1000, start_node = 1) {
 
   path <- integer(n_steps)
   path[1] <- start_node
-  walk_stop <- n_steps
+  walk_end <- n_steps
 
   # random walk
   for (i in 2:n_steps) {
     current_node <- path[i - 1]
     neighbor_out <- neighbor_out_list[[current_node]]
 
+    # walk ends at a sink
     if (length(neighbor_out) == 0) {
       warning(
         sprintf(
@@ -46,7 +73,7 @@ random_walk <- function(adj, n_steps = 1000, start_node = 1) {
           i - 1, current_node
         )
       )
-      walk_stop <- i - 1
+      walk_end <- i - 1
       break
     }
 
@@ -57,7 +84,13 @@ random_walk <- function(adj, n_steps = 1000, start_node = 1) {
     }
   }
 
-  path <- path[seq_len(walk_stop)]
+  path <- path[seq_len(walk_end)]
+
+  # # visit counts will be computed in drunksc() function
+  # n_visits <- tabulate(path, nbins = nrow(adj))
+  # names(n_visits) <- rownames(adj)
+
+  # return(list(path = path, n_visits = n_visits))
 
   return(path)
 }
