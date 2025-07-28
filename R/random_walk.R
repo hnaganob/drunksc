@@ -1,44 +1,63 @@
-random_walk <- function(adj, n_steps, start_node = NULL) {
-  # Check that adj is a square matrix
+random_walk <- function(adj, n_steps = 1000, start_node = 1) {
+
+  # adjacency matrix
   if (!is.matrix(adj) || nrow(adj) != ncol(adj)) {
     stop("The adjacency matrix must be a square matrix.")
   }
-
-  # Number of nodes in the lattice
-  n_nodes <- nrow(adj)
-
-  # Initialize the walk
-  walk <- integer(n_steps + 1)  # To store the visited nodes
-
-  # Set the start node
-  if (is.null(start_node)) {
-    walk[1] <- sample(1:n_nodes, 1)  # Start at a random node if start_node is not provided
-  } else {
-    if (start_node < 1 || start_node > n_nodes) {
-      stop("Start node must be within the range of nodes in the adjacency matrix.")
-    }
-    walk[1] <- start_node
+  # n_steps
+  if (!is.numeric(n_steps) || length(n_steps) != 1 || n_steps < 1 || n_steps != as.integer(n_steps)) {
+    stop("n_steps must be a positive integer.")
+  }
+  # start_node
+  if (!is.numeric(start_node) || length(start_node) != 1 || start_node < 1 || start_node > nrow(adj)) {
+    stop("start_node must be between 1 and nrow(adj).")
   }
 
-  # Perform the random walk
-  for (step in 2:(n_steps + 1)) {
-    current_node <- walk[step - 1]
+  # prepare list of neighbors at each node
+  neighbor_out_list <- list()
+  for (node in 1:nrow(adj)) {
+    neighbor_out_list[[node]] <- which(adj[node, ] == 1) # row is out-degree
+  }
 
-    # Find the neighbors of the current node
-    neighbors <- which(adj[current_node, ] == 1)
+  # stop if start_node has no neighbors
+  if (length(neighbor_out_list[[start_node]]) == 0) {
+    stop(
+      sprintf(
+        "Node %d has no outgoing neighbors. Cannot proceed with the random walk.",
+        start_node
+      )
+    )
+  }
 
-    # Ensure correct sampling when only one neighbor exists
-    if (length(neighbors) == 1) {
-      walk[step] <- neighbors
-    } else if (length(neighbors) > 1) {
-      walk[step] <- sample(neighbors, 1)
-    } else {
-      # If no neighbors, stop the walk
-      walk <- walk[1:(step - 1)]
-      warning("Reached a node with no neighbors; ending walk early.")
+
+  path <- integer(n_steps)
+  path[1] <- start_node
+  walk_stop <- n_steps
+
+  # random walk
+  for (i in 2:n_steps) {
+    current_node <- path[i - 1]
+    neighbor_out <- neighbor_out_list[[current_node]]
+
+    if (length(neighbor_out) == 0) {
+      warning(
+        sprintf(
+          "Walk stopped at step %d: node %d has no outgoing edges.",
+          i - 1, current_node
+        )
+      )
+      walk_stop <- i - 1
       break
     }
+
+    if (length(neighbor_out) == 1) {
+      path[i] <- neighbor_out
+    } else {
+      path[i] <- neighbor_out[sample.int(length(neighbor_out), 1)]
+    }
   }
 
-  return(walk)
+  path <- path[seq_len(walk_stop)]
+
+  return(path)
 }
