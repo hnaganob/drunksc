@@ -108,6 +108,9 @@ lattice_cube <- function(nx = 4, ny = 4, nz = 4, torus = TRUE, display_plot = TR
 
 
   # plot ----
+  opar <- par(no.readonly = TRUE)
+  on.exit(par(opar))
+
   if (isTRUE(display_plot)) {
     par(mai = rep(0, 4))
     plot(

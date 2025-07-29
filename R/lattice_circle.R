@@ -44,6 +44,9 @@ lattice_circle <- function(n = 5, display_plot = TRUE) {
 
 
   # plot ----
+  opar <- par(no.readonly = TRUE)
+  on.exit(par(opar))
+
   if (isTRUE(display_plot)) {
     par(mai = rep(0, 4))
     plot(
