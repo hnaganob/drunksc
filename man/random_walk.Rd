@@ -26,11 +26,12 @@ The function then returns both the sequence of visited nodes and a
 per-node visit count.
 }
 \examples{
+set.seed(1224)
 adj <- lattice_circle(n = 10)$adj
 path <- random_walk(adj = adj, n_steps = 10000, start_node = 1)
 barplot(table(path))
 
-adj[1, 10] <- 0  # out-going edge from node 1 to node 10 removed
+adj[1, 10] <- 0  # remove outgoing edge from node 1 to node 10.
 path <- random_walk(adj = adj, n_steps = 10000, start_node = 1)
 barplot(table(path))
 }

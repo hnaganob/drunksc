@@ -18,11 +18,12 @@
 #' @export
 #'
 #' @examples
+#' set.seed(1224)
 #' adj <- lattice_circle(n = 10)$adj
 #' path <- random_walk(adj = adj, n_steps = 10000, start_node = 1)
 #' barplot(table(path))
 #'
-#' adj[1, 10] <- 0  # Removed outgoing edge from node 1 to node 10.
+#' adj[1, 10] <- 0  # remove outgoing edge from node 1 to node 10.
 #' path <- random_walk(adj = adj, n_steps = 10000, start_node = 1)
 #' barplot(table(path))
 random_walk <- function(adj, n_steps = 1000, start_node = 1) {
@@ -86,11 +87,6 @@ random_walk <- function(adj, n_steps = 1000, start_node = 1) {
 
   path <- path[seq_len(walk_end)]
 
-  # # visit counts will be computed in drunksc() function
-  # n_visits <- tabulate(path, nbins = nrow(adj))
-  # names(n_visits) <- rownames(adj)
-
-  # return(list(path = path, n_visits = n_visits))
-
+  # return(list(path = path, adj = adj))
   return(path)
 }
